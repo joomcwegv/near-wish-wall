@@ -83,11 +83,16 @@ async function loadWishes() {
   empty.classList.add('hidden');
 
   try {
-    const [wishes, countStr, totalYocto] = await Promise.all([
+    let [wishes, countStr, totalYocto] = await Promise.all([
       contract.get_wishes(),
       contract.get_wish_count(),
       contract.get_total_near(),
     ]);
+
+    // near-sdk-go double-encodes: arrays come back as JSON strings
+    if (typeof wishes === 'string') {
+      try { wishes = JSON.parse(wishes); } catch(e) { wishes = []; }
+    }
 
     // Update stats
     document.getElementById('stat-count').textContent = countStr;
