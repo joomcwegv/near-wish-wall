@@ -14,11 +14,17 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.21'
+          go-version: '1.23'
 
-      - name: Install near-cli-go
+      - name: Install near-cli-go (from our fork)
         run: |
-          curl -LO https://raw.githubusercontent.com/vlmoon99/near-cli-go/main/setup.sh
+          git clone -b fix/critical-bugs https://github.com/joomcwegv/near-cli-go.git
+          cd near-cli-go
+          go build -o near-go .
+          mkdir -p $HOME/.near-go
+          cp near-go $HOME/.near-go/
+          cp setup.sh $HOME/.near-go/
+          cd $HOME/.near-go
           chmod +x setup.sh
           ./setup.sh
           echo "$HOME/.near-go" >> $GITHUB_PATH
