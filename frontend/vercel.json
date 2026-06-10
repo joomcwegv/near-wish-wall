@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/rpc",
+      "destination": "https://rpc.testnet.near.org"
+    }
+  ]
+}

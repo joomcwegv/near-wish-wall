@@ -6,10 +6,12 @@
 // ⚠️  UPDATE THIS after you deploy your contract!
 const CONTRACT_ID = 'auctiontest2026-v2.testnet';
 
+const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+
 const NEAR_CONFIG = {
   networkId:   'testnet',
   keyStore:    new nearApi.keyStores.BrowserLocalStorageKeyStore(),
-  nodeUrl:     'https://rpc.testnet.near.org',
+  nodeUrl:     isLocal ? 'https://rpc.testnet.near.org' : '/api/rpc',
   walletUrl:   'https://testnet.mynearwallet.com/',
   helperUrl:   'https://helper.testnet.near.org',
   explorerUrl: 'https://testnet.nearblocks.io',
