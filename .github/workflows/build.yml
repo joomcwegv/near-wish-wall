@@ -31,6 +31,7 @@ jobs:
       - name: Build Contract
         run: |
           cd contract
+          go mod tidy
           near-go build project
           echo "Build finished! Directory contents:"
           ls -la
