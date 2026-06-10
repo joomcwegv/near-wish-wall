@@ -1,0 +1,35 @@
+name: Build Contract
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Install near-cli-go
+        run: |
+          curl -LO https://raw.githubusercontent.com/vlmoon99/near-cli-go/main/setup.sh
+          chmod +x setup.sh
+          ./setup.sh
+          echo "$HOME/.near-go" >> $GITHUB_PATH
+
+      - name: Build Contract
+        run: |
+          cd contract
+          near-go build
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: main.wasm
+          path: contract/main.wasm
