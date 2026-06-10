@@ -59,12 +59,12 @@ async function init() {
 //  WALLET
 // ============================================================
 function connectWallet() {
-  wallet.requestSignIn({
-    contractId: CONTRACT_ID,
-    methodNames: ['add_wish'],
-    successUrl: window.location.href,
-    failureUrl: window.location.href,
-  });
+  wallet.requestSignIn(
+    CONTRACT_ID,
+    'NearWish Wall',
+    window.location.href,
+    window.location.href
+  );
 }
 
 function disconnectWallet() {
