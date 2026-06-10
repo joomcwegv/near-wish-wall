@@ -152,9 +152,16 @@ async function submitWish(e) {
 // ============================================================
 function formatNear(yoctoStr) {
   if (!yoctoStr) return '0';
-  const yocto = BigInt(yoctoStr);
-  const near  = Number(yocto * BigInt(1000) / YOCTO) / 1000;
-  return near.toFixed(3).replace(/\.?0+$/, '');
+  // near-sdk-go sometimes wraps strings in extra JSON quotes — strip them
+  const cleaned = String(yoctoStr).replace(/^"|"$/g, '').trim();
+  if (!cleaned || cleaned === 'null') return '0';
+  try {
+    const yocto = BigInt(cleaned);
+    const near  = Number(yocto * BigInt(1000) / YOCTO) / 1000;
+    return near.toFixed(3).replace(/\.?0+$/, '');
+  } catch (e) {
+    return '0';
+  }
 }
 
 function timeAgo(ms) {
