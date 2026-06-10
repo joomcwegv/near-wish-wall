@@ -27,6 +27,7 @@ jobs:
           cp near-go $HOME/.near-go/
           cp setup.sh $HOME/.near-go/
           echo "$HOME/.near-go" >> $GITHUB_PATH
+          echo "$HOME/.near-go/tinygo/bin" >> $GITHUB_PATH
 
       - name: Build Contract
         run: |

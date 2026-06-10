@@ -39,9 +39,17 @@ func (c *Contract) AddWish(message string) {
 		env.PanicStr("Message too long, max 500 characters")
 	}
 
-	deposit := env.GetAttachedDeposit()
-	sender := env.GetPredecessorAccountId()
-	timestamp := env.GetBlockTimestamp()
+	deposit, err := env.GetAttachedDeposit()
+	if err != nil {
+		env.PanicStr("Failed to get attached deposit: " + err.Error())
+	}
+	
+	sender, err := env.GetPredecessorAccountID()
+	if err != nil {
+		env.PanicStr("Failed to get predecessor account: " + err.Error())
+	}
+
+	timestamp := env.GetBlockTimeMs()
 
 	wish := WishEntry{
 		Sender:    sender,
@@ -57,7 +65,12 @@ func (c *Contract) AddWish(message string) {
 	if !ok {
 		total = big.NewInt(0)
 	}
-	total.Add(total, deposit)
+	
+	depInt, ok := new(big.Int).SetString(deposit.String(), 10)
+	if !ok {
+		depInt = big.NewInt(0)
+	}
+	total.Add(total, depInt)
 	c.TotalNear = total.String()
 
 	env.LogString("Wish added to the wall!")

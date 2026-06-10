@@ -4,7 +4,7 @@
 // ============================================================
 
 // ⚠️  UPDATE THIS after you deploy your contract!
-const CONTRACT_ID = 'YOUR_ACCOUNT.testnet';
+const CONTRACT_ID = 'auctiontest2026-v2.testnet';
 
 const NEAR_CONFIG = {
   networkId:   'testnet',
@@ -157,9 +157,8 @@ function formatNear(yoctoStr) {
   return near.toFixed(3).replace(/\.?0+$/, '');
 }
 
-function timeAgo(nanoseconds) {
-  const ms   = Number(BigInt(nanoseconds) / BigInt(1_000_000));
-  const secs = Math.floor((Date.now() - ms) / 1000);
+function timeAgo(ms) {
+  const secs = Math.floor((Date.now() - Number(ms)) / 1000);
   if (secs < 60)    return `${secs}s ago`;
   if (secs < 3600)  return `${Math.floor(secs/60)}m ago`;
   if (secs < 86400) return `${Math.floor(secs/3600)}h ago`;
