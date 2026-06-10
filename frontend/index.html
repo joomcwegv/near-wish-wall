@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NearWish Wall — Decentralized Wishing Well on NEAR</title>
+  <meta name="description" content="Leave your wish forever on the NEAR blockchain and donate to the community!" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Animated star background -->
+  <canvas id="stars-canvas"></canvas>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">
+      <span class="logo-icon">🌟</span>
+      <span class="logo-text">NearWish <span class="logo-accent">Wall</span></span>
+    </div>
+    <div class="wallet-area">
+      <div id="account-pill" class="account-pill hidden">
+        <span class="account-dot"></span>
+        <span id="account-name"></span>
+        <button onclick="disconnectWallet()" class="btn-disconnect">✕</button>
+      </div>
+      <button id="connect-btn" onclick="connectWallet()" class="btn-connect">
+        <span>Connect Wallet</span>
+        <span class="btn-arrow">→</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- STATS BAR -->
+  <section class="stats-bar">
+    <div class="stat">
+      <div class="stat-val" id="stat-count">—</div>
+      <div class="stat-lbl">✨ Total Wishes</div>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+      <div class="stat-val" id="stat-total">—</div>
+      <div class="stat-lbl">💰 NEAR Donated</div>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+      <div class="stat-val">Testnet</div>
+      <div class="stat-lbl">🌐 Network</div>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <main class="main-grid">
+
+    <!-- LEFT: Submit form -->
+    <aside class="form-panel glass-card">
+      <h2 class="panel-title">Make a Wish ✨</h2>
+      <p class="panel-sub">Your message is stored <em>forever</em> on the blockchain</p>
+
+      <!-- Not connected state -->
+      <div id="not-connected" class="not-connected-state">
+        <div class="lock-icon">🔒</div>
+        <p>Connect your NEAR Testnet wallet to make a wish</p>
+        <button onclick="connectWallet()" class="btn-connect-big">Connect Wallet →</button>
+      </div>
+
+      <!-- Connected: wish form -->
+      <form id="wish-form" class="wish-form hidden" onsubmit="submitWish(event)">
+        <div class="field">
+          <label for="wish-msg">Your Wish</label>
+          <textarea id="wish-msg" placeholder="Write your wish here… (max 500 chars)" maxlength="500" rows="5" required></textarea>
+          <div class="char-count"><span id="char-used">0</span> / 500</div>
+        </div>
+        <div class="field">
+          <label for="wish-amount">Donate (NEAR)</label>
+          <div class="amount-input-wrap">
+            <input type="number" id="wish-amount" value="0.1" min="0.1" step="0.1" />
+            <span class="near-symbol">Ⓝ</span>
+          </div>
+        </div>
+        <button type="submit" class="btn-submit" id="submit-btn">
+          <span id="submit-label">Send Wish ✨</span>
+        </button>
+        <p class="tx-note">A transaction will open in your NEAR wallet</p>
+      </form>
+    </aside>
+
+    <!-- RIGHT: Wishes feed -->
+    <section class="feed-panel">
+      <div class="feed-header">
+        <h2 class="panel-title">Community Wall 🌍</h2>
+        <button onclick="loadWishes()" class="btn-refresh">↻ Refresh</button>
+      </div>
+
+      <div id="loading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading wishes from blockchain…</p>
+      </div>
+
+      <div id="empty-state" class="empty-state hidden">
+        <p class="empty-icon">🌱</p>
+        <p>No wishes yet. Be the first!</p>
+      </div>
+
+      <div id="wishes-feed" class="wishes-feed hidden"></div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>Built with ❤️ on <strong>NEAR Protocol</strong> using <strong>near-sdk-go</strong></p>
+    <a id="explorer-link" href="https://testnet.nearblocks.io" target="_blank" class="explorer-link">View Contract on Explorer ↗</a>
+  </footer>
+
+  <!-- near-api-js -->
+  <script src="https://cdn.jsdelivr.net/npm/near-api-js@2.1.4/dist/near-api-js.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
