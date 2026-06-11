@@ -4,6 +4,7 @@ import (
 	"math/big"
 
 	"github.com/vlmoon99/near-sdk-go/env"
+	"github.com/vlmoon99/near-sdk-go/types"
 )
 
 // WishEntry represents a single wish with a NEAR donation
@@ -95,3 +96,27 @@ func (c *Contract) GetWishCount() int {
 func (c *Contract) GetOwner() string {
 	return c.Owner
 }
+
+// @contract:mutating
+func (c *Contract) Withdraw() {
+	sender, err := env.GetPredecessorAccountID()
+	if err != nil {
+		env.PanicStr("Failed to get predecessor account: " + err.Error())
+	}
+	
+	if sender != c.Owner {
+		env.PanicStr("Only owner can withdraw funds")
+	}
+
+	amount128, err := types.U128FromString(c.TotalNear)
+	if err != nil {
+		env.PanicStr("Failed to parse TotalNear: " + err.Error())
+	}
+
+	promiseId := env.PromiseBatchCreate([]byte(c.Owner))
+	env.PromiseBatchActionTransfer(promiseId, amount128)
+
+	c.TotalNear = "0"
+	env.LogString("Funds withdrawn successfully!")
+}
+
