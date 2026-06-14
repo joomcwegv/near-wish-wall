@@ -120,3 +120,11 @@ func (c *Contract) Withdraw() {
 	env.LogString("Funds withdrawn successfully!")
 }
 
+// @contract:mutating
+func (c *Contract) FixOwner(new_owner string) {
+	if c.Owner != "" {
+		env.PanicStr("Owner is already set!")
+	}
+	c.Owner = new_owner
+	env.LogString("Owner successfully updated to " + new_owner)
+}
