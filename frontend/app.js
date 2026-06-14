@@ -30,7 +30,7 @@ async function init() {
   wallet   = new nearApi.WalletConnection(near, 'near-wish-wall');
   contract = new nearApi.Contract(wallet.account(), CONTRACT_ID, {
     viewMethods:   ['get_wishes', 'get_wish_count', 'get_total_near', 'get_owner'],
-    changeMethods: ['init', 'add_wish'],
+    changeMethods: ['init', 'add_wish', 'withdraw'],
   });
 
   // Update explorer link
@@ -44,6 +44,16 @@ async function init() {
     document.getElementById('connect-btn').classList.add('hidden');
     document.getElementById('not-connected').classList.add('hidden');
     document.getElementById('wish-form').classList.remove('hidden');
+
+    // Check if the current user is the owner
+    try {
+      const owner = await contract.get_owner();
+      if (accountId === owner) {
+        document.getElementById('admin-panel').classList.remove('hidden');
+      }
+    } catch (e) {
+      console.error("Could not fetch owner", e);
+    }
   }
 
   // Attach char counter
@@ -151,6 +161,33 @@ async function submitWish(e) {
     alert('Transaction failed: ' + err.message);
     btn.disabled = false;
     lbl.textContent = 'Send Wish ✨';
+  }
+}
+
+// ============================================================
+//  WITHDRAW FUNDS (Admin only)
+// ============================================================
+async function withdrawFunds() {
+  const btn = document.getElementById('btn-withdraw');
+  const lbl = document.getElementById('withdraw-label');
+  
+  if (!confirm("Are you sure you want to withdraw all accumulated NEAR?")) return;
+
+  btn.disabled = true;
+  lbl.textContent = 'Withdrawing...';
+
+  try {
+    await contract.withdraw(
+      {},
+      '300000000000000', // 300 Tgas for withdrawal promise
+      '0'                // 0 attached deposit
+    );
+    // Page will reload from wallet redirect
+  } catch (err) {
+    console.error(err);
+    alert('Withdraw failed: ' + err.message);
+    btn.disabled = false;
+    lbl.textContent = 'Withdraw All Funds 💰';
   }
 }
 

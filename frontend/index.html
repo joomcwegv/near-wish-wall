@@ -54,8 +54,9 @@
   <!-- MAIN -->
   <main class="main-grid">
 
-    <!-- LEFT: Submit form -->
-    <aside class="form-panel glass-card">
+    <!-- LEFT: Submit form & Admin -->
+    <div class="left-col">
+      <aside class="form-panel glass-card">
       <h2 class="panel-title">Пожелай ✨</h2>
       <p class="panel-sub">Your message is stored <em>forever</em> on the blockchain</p>
 
@@ -86,6 +87,17 @@
         <p class="tx-note">A transaction will open in your NEAR wallet</p>
       </form>
     </aside>
+
+    <!-- Admin Panel (Owner Only) -->
+    <aside id="admin-panel" class="admin-panel glass-card hidden">
+      <h2 class="panel-title" style="color: #f87171;">👑 Admin Panel</h2>
+      <p class="panel-sub">Only you (the owner) can see this</p>
+      <button id="btn-withdraw" onclick="withdrawFunds()" class="btn-submit" style="background: linear-gradient(135deg, #ef4444, #b91c1c); width: 100%;">
+        <span id="withdraw-label">Withdraw All Funds 💰</span>
+      </button>
+      <p class="tx-note" style="margin-top: 10px;">Transfers all accumulated NEAR to your wallet</p>
+    </aside>
+  </div>
 
     <!-- RIGHT: Wishes feed -->
     <section class="feed-panel">

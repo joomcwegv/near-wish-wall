@@ -131,8 +131,21 @@ body {
   box-shadow: 0 8px 32px rgba(0,0,0,.4);
 }
 
-/* ===================== FORM PANEL ===================== */
-.form-panel { height: fit-content; position: sticky; top: 1.5rem; }
+/* ===================== FORM PANEL & ADMIN ===================== */
+.left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: sticky;
+  top: 1.5rem;
+  height: fit-content;
+}
+
+.admin-panel {
+  border-color: rgba(239, 68, 68, 0.3);
+  box-shadow: 0 8px 32px rgba(239, 68, 68, 0.1);
+  animation: fadeUp 0.5s ease both;
+}
 
 .panel-title { font-size: 1.25rem; font-weight: 700; margin-bottom: .3rem; }
 .panel-sub { font-size: .85rem; color: var(--muted); margin-bottom: 1.5rem; }
