@@ -47,7 +47,10 @@ async function init() {
 
     // Check if the current user is the owner
     try {
-      const owner = await contract.get_owner();
+      let owner = await contract.get_owner();
+      // near-sdk-go sometimes wraps strings in quotes
+      owner = String(owner).replace(/^"|"$/g, '').trim();
+      
       if (accountId === owner) {
         document.getElementById('admin-panel').classList.remove('hidden');
       }
